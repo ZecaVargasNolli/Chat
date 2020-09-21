@@ -43,7 +43,7 @@ public class AutenticaUsuarioRequestStrategy implements TrataRequestStrategy {
     @Override
     public void respondeRequest() {
         try {
-             OutputStream out = this.conexao.getOutputStream();
+            OutputStream out = this.conexao.getOutputStream();
            
             Gson gson = new Gson();
             Usuario retorno = null;

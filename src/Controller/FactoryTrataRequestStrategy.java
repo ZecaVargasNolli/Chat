@@ -16,6 +16,18 @@ public class FactoryTrataRequestStrategy {
             case 2:
                 strategy = new AtualizaUsuarioRequestStrategy();
                 break;
+            case 3:
+                strategy = new InsereUsuarioRequestStrategy();
+                break;
+            case 4:
+                strategy = new AddContatoRequestStrategy();
+                break;
+            case 5:
+                strategy = new RemoveContatoRequestStrategy();
+                break;
+            case 6:
+                strategy = null;
+                break;
         }
         return strategy;
     }

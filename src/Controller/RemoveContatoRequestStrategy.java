@@ -8,18 +8,22 @@ package Controller;
 import Model.ServerRequest;
 import Model.ServerResponse;
 import Model.Usuario;
-import Persistencia.UsuarioDao;
+import Persistencia.UsuarioContatosDao;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
-
-public class AtualizaUsuarioRequestStrategy implements TrataRequestStrategy {
+/**
+ *
+ * @author Giancarlo
+ */
+public class RemoveContatoRequestStrategy implements TrataRequestStrategy {
     
     private ServerRequest request;
     private Socket conexao;
-    private boolean executouUpdate = false;
+    private boolean execDeleteContato;
+    
     
     @Override
     public void setRequest(ServerRequest req) {
@@ -33,18 +37,22 @@ public class AtualizaUsuarioRequestStrategy implements TrataRequestStrategy {
 
     @Override
     public void processaRequest() {
-        UsuarioDao usuDao = new UsuarioDao();
-        this.executouUpdate = usuDao.updateUsuario(this.request.getUsuRequest());
+        Usuario usu     = this.request.getUsuRequest();
+        Usuario contato = this.request.getUsuAlteracao();
+        
+        UsuarioContatosDao usuContDao = new UsuarioContatosDao();
+        this.execDeleteContato = usuContDao.deleteContatoDoUsuario(usu, contato);
+        
     }
 
     @Override
     public void respondeRequest() {
-         try {
+        try {
             OutputStream out = this.conexao.getOutputStream();
             Gson gson = new Gson();
             
             ServerResponse resp = new ServerResponse();
-            resp.setOk(this.executouUpdate);
+            resp.setOk(this.execDeleteContato);
             
             String objJsonRetorno = gson.toJson(resp);
             String strRetorno =  objJsonRetorno.length()+"\n"+objJsonRetorno;

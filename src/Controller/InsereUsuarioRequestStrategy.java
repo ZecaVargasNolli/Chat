@@ -7,19 +7,21 @@ package Controller;
 
 import Model.ServerRequest;
 import Model.ServerResponse;
-import Model.Usuario;
 import Persistencia.UsuarioDao;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
-
-public class AtualizaUsuarioRequestStrategy implements TrataRequestStrategy {
+/**
+ *
+ * @author Giancarlo
+ */
+public class InsereUsuarioRequestStrategy implements TrataRequestStrategy {
     
     private ServerRequest request;
     private Socket conexao;
-    private boolean executouUpdate = false;
+    private boolean executouInsert = false;
     
     @Override
     public void setRequest(ServerRequest req) {
@@ -34,7 +36,7 @@ public class AtualizaUsuarioRequestStrategy implements TrataRequestStrategy {
     @Override
     public void processaRequest() {
         UsuarioDao usuDao = new UsuarioDao();
-        this.executouUpdate = usuDao.updateUsuario(this.request.getUsuRequest());
+        this.executouInsert = usuDao.insertUsuario(this.request.getUsuRequest());
     }
 
     @Override
@@ -44,7 +46,7 @@ public class AtualizaUsuarioRequestStrategy implements TrataRequestStrategy {
             Gson gson = new Gson();
             
             ServerResponse resp = new ServerResponse();
-            resp.setOk(this.executouUpdate);
+            resp.setOk(this.executouInsert);
             
             String objJsonRetorno = gson.toJson(resp);
             String strRetorno =  objJsonRetorno.length()+"\n"+objJsonRetorno;

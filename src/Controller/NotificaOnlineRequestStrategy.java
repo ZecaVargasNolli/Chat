@@ -5,22 +5,30 @@
  */
 package Controller;
 
+import Model.OnlineUserControl;
 import Model.ServerRequest;
 import Model.ServerResponse;
+import Model.Session;
 import Model.Usuario;
 import Persistencia.UsuarioDao;
 import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Vector;
 
+/**
+ *
+ * @author Giancarlo
+ */
+public class NotificaOnlineRequestStrategy implements TrataRequestStrategy {
 
-public class AtualizaUsuarioRequestStrategy implements TrataRequestStrategy {
-    
     private ServerRequest request;
     private Socket conexao;
-    private boolean executouUpdate = false;
     
+
     @Override
     public void setRequest(ServerRequest req) {
         this.request = req;
@@ -33,8 +41,16 @@ public class AtualizaUsuarioRequestStrategy implements TrataRequestStrategy {
 
     @Override
     public void processaRequest() {
-        UsuarioDao usuDao = new UsuarioDao();
-        this.executouUpdate = usuDao.updateUsuario(this.request.getUsuRequest());
+        Usuario usuVerificar = this.request.getUsuRequest();
+        OnlineUserControl onUsuCtrl = OnlineUserControl.getInstance();
+        Session sessionUsu = onUsuCtrl.getSessionUser(usuVerificar);
+        if(sessionUsu != null) {
+            sessionUsu.setOnline(true);
+        }
+        else {
+            onUsuCtrl.addSessionUser(usuVerificar);
+        }
+
     }
 
     @Override
@@ -44,7 +60,7 @@ public class AtualizaUsuarioRequestStrategy implements TrataRequestStrategy {
             Gson gson = new Gson();
             
             ServerResponse resp = new ServerResponse();
-            resp.setOk(this.executouUpdate);
+            resp.setOk(true);
             
             String objJsonRetorno = gson.toJson(resp);
             String strRetorno =  objJsonRetorno.length()+"\n"+objJsonRetorno;
@@ -54,6 +70,8 @@ public class AtualizaUsuarioRequestStrategy implements TrataRequestStrategy {
         catch (IOException ex) {
             ex.printStackTrace();
         }
+
     }
-    
+
+   
 }

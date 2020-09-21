@@ -21,6 +21,15 @@ public class Usuario {
     public void setIpAtual(String ipAtual) {
         this.ipAtual = ipAtual;
     }
+    
+    public boolean temIp() {
+        if (this.ipAtual != null) {
+            if (!this.ipAtual.trim().equals("")) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     public int getId() {
         return id;
