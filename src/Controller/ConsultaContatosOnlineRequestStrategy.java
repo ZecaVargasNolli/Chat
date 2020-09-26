@@ -5,9 +5,12 @@
  */
 package Controller;
 
+import Model.OnlineUserControl;
 import Model.ServerRequest;
 import Model.ServerResponse;
+import Model.Session;
 import Model.Usuario;
+import Persistencia.UsuarioContatosDao;
 import Persistencia.UsuarioDao;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -22,7 +25,7 @@ import java.util.Vector;
  *
  * @author Giancarlo
  */
-public class ConsultaUsuarioEmailRequestStrategy implements TrataRequestStrategy {
+public class ConsultaContatosOnlineRequestStrategy implements TrataRequestStrategy {
 
     private ServerRequest request;
     private Socket conexao;
@@ -52,9 +55,25 @@ public class ConsultaUsuarioEmailRequestStrategy implements TrataRequestStrategy
 
     @Override
     public void processaRequest() {
-         UsuarioDao usuDao = new UsuarioDao();
-         this.usuariosRetorno = this.ConverteVectorParaUsuario(usuDao.selectByEmail(this.request.getUsuAlteracao().getEmail()));
+         UsuarioContatosDao usuContDao = new UsuarioContatosDao();
+         List<Usuario> contatosDoUsuario = this.ConverteVectorParaUsuario(usuContDao.selectContatosDoUsuario(this.request.getUsuRequest()));
          
+         this.usuariosRetorno = this.retornaUusariosOnline(contatosDoUsuario);
+    }
+    
+    private List<Usuario> retornaUusariosOnline(List<Usuario> listaUsu) {
+        List<Usuario> listaRetorno = new ArrayList<Usuario>();
+        
+        OnlineUserControl ctrlOn = OnlineUserControl.getInstance();
+        for (Usuario usuario : listaUsu) {
+            Session sessaoUsu = ctrlOn.getSessionUser(usuario);
+            if (sessaoUsu != null) {
+                if (sessaoUsu.isOnline()) {
+                    listaRetorno.add(sessaoUsu.getUsu());
+                }
+            }
+        }
+        return listaRetorno;
     }
 
     @Override

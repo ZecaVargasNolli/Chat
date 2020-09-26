@@ -62,8 +62,6 @@ public class AutenticaUsuarioRequestStrategy implements TrataRequestStrategy {
         catch (IOException ex) {
             ex.printStackTrace();
         }
-        
-      
     }
     
     private Usuario getUsuarioAutenticacao() {

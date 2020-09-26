@@ -26,7 +26,13 @@ public class FactoryTrataRequestStrategy {
                 strategy = new RemoveContatoRequestStrategy();
                 break;
             case 6:
-                strategy = null;
+                strategy = new ConsultaUsuarioEmailRequestStrategy();
+                break;
+            case 7:
+                strategy = new ConsultaContatosRequestStrategy();
+                break;
+            case 8:
+                strategy = new ConsultaContatosOnlineRequestStrategy();
                 break;
         }
         return strategy;

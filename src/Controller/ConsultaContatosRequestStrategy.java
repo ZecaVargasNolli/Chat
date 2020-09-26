@@ -8,6 +8,7 @@ package Controller;
 import Model.ServerRequest;
 import Model.ServerResponse;
 import Model.Usuario;
+import Persistencia.UsuarioContatosDao;
 import Persistencia.UsuarioDao;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -22,7 +23,7 @@ import java.util.Vector;
  *
  * @author Giancarlo
  */
-public class ConsultaUsuarioEmailRequestStrategy implements TrataRequestStrategy {
+public class ConsultaContatosRequestStrategy implements TrataRequestStrategy {
 
     private ServerRequest request;
     private Socket conexao;
@@ -52,8 +53,8 @@ public class ConsultaUsuarioEmailRequestStrategy implements TrataRequestStrategy
 
     @Override
     public void processaRequest() {
-         UsuarioDao usuDao = new UsuarioDao();
-         this.usuariosRetorno = this.ConverteVectorParaUsuario(usuDao.selectByEmail(this.request.getUsuAlteracao().getEmail()));
+         UsuarioContatosDao usuContDao = new UsuarioContatosDao();
+         this.usuariosRetorno = this.ConverteVectorParaUsuario(usuContDao.selectContatosDoUsuario(this.request.getUsuRequest()));
          
     }
 
