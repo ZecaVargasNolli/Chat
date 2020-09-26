@@ -13,6 +13,15 @@ public class Usuario {
     private String senha;
     private int anoNascimento;
     private String ipAtual;
+    private int portaAtual;
+    
+    public int getPortaAtual() {
+        return portaAtual;
+    }
+
+    public void setPortaAtual(int portaAtual) {
+        this.portaAtual = portaAtual;
+    }
     
     public String getIpAtual() {
         return ipAtual; //String ipDaMaquina = InetAddress.getLocalHost().getHostAddress(); 
@@ -31,6 +40,7 @@ public class Usuario {
         return false;
     }
 
+    
     public int getId() {
         return id;
     }

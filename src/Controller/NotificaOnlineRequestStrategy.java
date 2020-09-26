@@ -43,14 +43,22 @@ public class NotificaOnlineRequestStrategy implements TrataRequestStrategy {
     public void processaRequest() {
         Usuario usuVerificar = this.request.getUsuRequest();
         OnlineUserControl onUsuCtrl = OnlineUserControl.getInstance();
+        Session sessionUsuAux = null;
         Session sessionUsu = onUsuCtrl.getSessionUser(usuVerificar);
+        /*verificando se o usuario ja possui sessão */
         if(sessionUsu != null) {
             sessionUsu.setOnline(true);
+            sessionUsuAux = sessionUsu;
         }
         else {
-            onUsuCtrl.addSessionUser(usuVerificar);
+            sessionUsuAux = onUsuCtrl.addSessionUser(usuVerificar);
         }
-
+        
+        /* matendo porta e ip atualizados */
+        sessionUsuAux.getUsu().setPortaAtual(this.request.getPortaAtual());
+        sessionUsuAux.getUsu().setIpAtual(this.request.getIpAtual());
+        
+        sessionUsuAux.atualizaUltimaRequisicao();
     }
 
     @Override

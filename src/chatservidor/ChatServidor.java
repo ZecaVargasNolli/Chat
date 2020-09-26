@@ -5,6 +5,7 @@
  */
 package chatservidor;
 
+import Controller.RunnableVerificaSessionOnline;
 import Controller.ServerRequestController;
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -18,6 +19,12 @@ public class ChatServidor {
     public static void main(String[] args) throws IOException {
         ServerSocket server = new ServerSocket(56000);
         server.setReuseAddress(true);
+        
+        /* iniciando a thread de controle de session */
+        Thread thSession = new Thread(new RunnableVerificaSessionOnline());
+        thSession.start();
+        
+        /*loop que para receber as requisições*/
         while (true) {
             try {
                 Socket conn = server.accept();

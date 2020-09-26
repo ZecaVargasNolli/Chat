@@ -32,12 +32,14 @@ public class OnlineUserControl {
         return retorno;
     }
     
-    public void addSessionUser(Usuario usu) {
-        this.sessionUsu.add(new Session(usu));
+    public Session addSessionUser(Usuario usu) {
+        Session novaSession = new Session(usu);
+        this.sessionUsu.add(novaSession);
+        return novaSession;
     }
 
     public List<Session> getSessionUsu() {
         return sessionUsu;
     }
-
+ 
 }
