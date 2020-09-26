@@ -154,6 +154,30 @@ public class UsuarioDao {
         return lista;
     }
     
+    public Vector selectByEmail (String email) {
+        Vector lista = new Vector();
+        ResultSet result;
+        try {
+            Statement stm = this.conn.createStatement();
+            result = stm.executeQuery("SELECT * FROM usuario WHERE email = '" + email +"'" );
+            
+            while (result.next()) {
+                Usuario usu = new Usuario();
+                usu.setId(result.getInt("id"));
+                usu.setSenha(result.getString("senha"));
+                usu.setEmail(result.getString("email"));
+                usu.setApelido(result.getString("apelido"));
+                usu.setAnoNascimento(result.getInt("ano_nascimento"));
+                lista.add(usu);
+            }
+             
+        }
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+    
     public Vector selectEmailSenha (String email, String senha) {
         Vector lista = new Vector();
         ResultSet result;

@@ -39,6 +39,14 @@ public class Usuario {
         }
         return false;
     }
+    
+    public boolean temPorta() {
+        return this.portaAtual != 0;
+    }
+    
+    public boolean isOnline() {
+        return this.temIp() && this.temPorta();
+    }
 
     
     public int getId() {
