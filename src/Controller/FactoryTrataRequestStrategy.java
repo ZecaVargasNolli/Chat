@@ -34,6 +34,9 @@ public class FactoryTrataRequestStrategy {
             case 8:
                 strategy = new ConsultaContatosOnlineRequestStrategy();
                 break;
+            case 9:
+                strategy = new NotificaOnlineRequestStrategy();
+                break;
         }
         return strategy;
     }
