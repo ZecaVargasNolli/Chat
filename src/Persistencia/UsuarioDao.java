@@ -159,7 +159,7 @@ public class UsuarioDao {
         ResultSet result;
         try {
             Statement stm = this.conn.createStatement();
-            result = stm.executeQuery("SELECT * FROM usuario WHERE email ilike '%" + email + "%' " );
+            result = stm.executeQuery("SELECT * FROM usuario WHERE UPPER(email) like '%" + email.toUpperCase() + "%' " );
             
             while (result.next()) {
                 Usuario usu = new Usuario();
