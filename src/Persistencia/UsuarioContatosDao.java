@@ -73,7 +73,10 @@ public class UsuarioContatosDao {
         boolean resultado = true;
          try {
             Statement stm = this.conn.createStatement();
-            stm.executeUpdate("DELETE FROM contato WHERE id_usuario = '" + usuario.getId() + "' AND id_contato = '" + contatoDoUsuario.getId() + "' ");
+            stm.executeUpdate("DELETE "
+                              + " FROM contato "
+                             + " WHERE (id_usuario = '" + usuario.getId() + "' OR id_contato = '" + usuario.getId() + "' )" 
+                               + " AND (id_usuario = '" + contatoDoUsuario.getId() + "' OR id_contato = '" + contatoDoUsuario.getId() + "' ) ");
             
         }
         catch (SQLException e) {
@@ -95,8 +98,9 @@ public class UsuarioContatosDao {
                                + "       usuario.ano_nascimento "
                                + "  FROM contato "
                           + " INNER JOIN usuario  "
-                               + "    ON contato.id_contato = usuario.id "
-                               + "   AND contato.id_usuario = '" + usuario.getId() + "' ";
+                               + "    ON (contato.id_contato = usuario.id OR contato.id_usuario = usuario.id) "
+                               + "   AND  usuario.email != '"+usuario.getEmail().trim()+"' "
+                               + "   AND (contato.id_usuario = '" + usuario.getId() + "' OR contato.id_contato = '" + usuario.getId() + "' )";
 
             result = stm.executeQuery(sqlContatos);
             
