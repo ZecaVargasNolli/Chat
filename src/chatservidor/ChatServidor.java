@@ -7,6 +7,8 @@ package chatservidor;
 
 import Controller.RunnableVerificaSessionOnline;
 import Controller.ServerRequestController;
+import Persistencia.UsuarioContatosDao;
+import Persistencia.UsuarioDao;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -17,6 +19,11 @@ public class ChatServidor {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException {
+        UsuarioDao usuDao = new UsuarioDao();
+        UsuarioContatosDao usuContDao = new UsuarioContatosDao();
+        usuDao.initDb();
+        usuContDao.initDb();
+        
         ServerSocket server = new ServerSocket(56000);
         server.setReuseAddress(true);
         
